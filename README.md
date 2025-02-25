@@ -103,16 +103,19 @@ done
 ```
 Note that three files are empty (ERR1 SRR1 SRR2).
 
+Example of an aligment
+
+```
+SRR2900498_3418_ka:f:6.726_L:+:2301783:-_L:-:7936:-_	16	card_nucl.gb|AB011184.1|+|0-3162|ARO:3004169|Msme_23S_CLR 	884	0	61M	*	0	0	CTGTGGGTAGGGGTGAAAGGCCAATCAAACCCCGTGATAGCTGGTTCTCCCCGAAATGCAT	*	NM:i:1	ms:i:116	AS:i:116	nn:i:0	tp:A:P	cm:i:4	s1:i:42	s2:i:42	de:f:0.0164	rl:i:0
+```
+
 ## filtering SAM
 
 Then we filter sam alignments using `filter_parse_script_v2.sh` provided in this repo for keeping only card alignments and removing short alignments. 
-
 and combine the result as `all_alignments.csv` 26GB.
 
 
-
-## finding accessions
-
+## Extracting alignment of human gut microbiom  accessions
 
 We used the SRA metadata that Kristen provided `SRA_metadata.csv` (9.6GB) with 32,755,969 SRA accessions. we extracted accessions of human gut microbiom (in python). We also filtered to those accessions that have collection date in range 2009-2024 (for some accessions there is only release date not collection date.) We selected accessions in 6 continents. This resulted in 296764 acessions. 
 
@@ -123,7 +126,9 @@ meta2 = meta[meta['organism']=="human gut metagenome"]
 meta3 = meta2[meta2['collection_date_sam'].notna()]
 meta3["collection_year"]=meta3.collection_date_sam.apply(lambda x: int(str(x)[1:5]))
 meta3_ = meta3[meta3['geo_loc_name_country_continent_calc'].isin(['Africa','Asia','Europe','North America','Oceania','South America'])] 
-meta4 = meta3_[meta3_['collection_year'].isin(list(range(2009,2024)))] 
+meta4 = meta3_[meta3_['collection_year'].isin(list(range(2009,2024)))]
+meta6= meta4[["acc","librarysource","organism","mbases","collection_year","geo_loc_name_country_calc","geo_loc_name_country_continent_calc"]] # "collection_date_sam"
+
 acc_humangut_wrelease_continent= set(meta4['acc'])
 print(len(acc_humangut_wrelease_continent)) 
 ```
@@ -135,7 +140,7 @@ folder="aligmnet_minimap/"
 file_ad=folder+"all_alignments.csv"
 file=open(file_ad,'r')
 
-file_out=open(file_ad+"_humangut_wcollection_continent_.csv",'w')
+file_out=open(file_ad+"_humangut_wcollection_continent.csv",'w')
 
 for line in file:
     line_strip= line.strip()
@@ -143,5 +148,67 @@ for line in file:
     if idd in acc_humangut_wrelease_continent:
        file_out.write(line_strip+"\n")         
 file_out.close()
+```
+
+We then merge the alignment with metadata
+
 
 ```
+file_ad="all_alignments.csv_humangut_wcollection_continent_h.csv"
+al_met_wcollect= pd.read_csv(file_ad)
+
+alingmnet_meta =  pd.merge(al_met_wcollect, meta6, on='acc')
+```
+
+## Combining with CARD metadata
+
+We downloaded CARD metadata from [here](https://card.mcmaster.ca/download/).
+```
+wget https://card.mcmaster.ca/download/0/broadstreet-v3.3.0.tar.bz2
+tar -xf broadstreet-v3.3.0.tar.bz2
+```
+
+in python
+```
+file_ad="card/aro_index.tsv"
+card = pd.read_csv(file_ad, sep='\t')
+card.columns = ['ARO_ID', 'CVTERM ID', 'Model Sequence ID', 'Model ID','Model Name', 'ARO Name', 'Protein Accession', 'DNA Accession','AMR Gene Family', 'Drug Class', 'Resistance Mechanism','CARD Short Name']
+
+```
+Example
+```
+ARO_ID	CVTERM ID	Model Sequence ID	Model ID	Model Name	ARO Name	Protein Accession	DNA Accession	AMR Gene Family	Drug Class	Resistance Mechanism	CARD Short Name
+0	ARO:3005099	43314	6143	3831	23S rRNA (adenine(2058)-N(6))-methyltransferas...	23S rRNA (adenine(2058)-N(6))-methyltransferas...	AAB60941.1	AF002716.1	Erm 23S ribosomal RNA methyltransferase	lincosamide antibiotic;macrolide antibiotic;st...	antibiotic target alteration	Spyo_ErmA_MLSb
+```
+
+
+
+We merge CARD with alignment and stored as a CSV file.
+
+```
+card2=card[["ARO_ID","AMR Gene Family","Drug Class","Resistance Mechanism"]]
+
+
+alingmnet_meta_aro =  pd.merge(alingmnet_meta, card2, on='ARO_ID')
+
+alingmnet_meta_aro.columns=["acc", "contig_id", "ARO_ID", "Alignment_Length", "Identity", "librarysource", "organism", "mbases", "collection_year", "country", "continent", "AMRGeneFamily", "DrugClass", "ResistanceMechanism"]
+alingmnet_meta_aro2= alingmnet_meta_aro[ ['contig_id','acc','librarysource', 'organism', 'mbases', 'collection_year','country', 'continent','Alignment_Length', 'Identity','ARO_ID','AMRGeneFamily', 'DrugClass', 'ResistanceMechanism']]
+
+file_ad="alignments_humangut_wcollection_continent.csv"
+alingmnet_meta_aro2.to_csv(file_ad) 
+
+```
+
+
+```
+contig_id	acc	librarysource	organism	mbases	collection_year	country	continent	Alignment_Length	Identity	ARO_ID	AMRGeneFamily	DrugClass	ResistanceMechanism
+0	DRR046464_7	DRR046464	METAGENOMIC	human gut metagenome	9.0	2014	Japan	Asia	193	84.4560	ARO:3003541	16s rRNA with mutation conferring resistance t...	aminoglycoside antibiotic;glycopeptide antibio...	antibiotic target alteration
+```
+
+
+Resulted in this file 240MB in [google drive](https://drive.google.com/file/d/1DGe3z5TxGUjMe3Mhs_VdMGGjpnKwsszk/view?usp=drive_link).
+
+We did a round of python analasys on this.  But then we use R code to extract the trend accross coutnries and year. 
+
+
+
