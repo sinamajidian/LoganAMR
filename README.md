@@ -113,10 +113,9 @@ SRR2900498_3418_ka:f:6.726_L:+:2301783:-_L:-:7936:-_	16	card_nucl.gb|AB011184.1|
 
 ## filtering SAM
 
-Then we filter sam alignments using `filter_parse_script_v2.sh` provided in this repo for keeping only card alignments and removing short alignments. 
-The paramenters for filtering were `Identity > 80%` and `Alignment length > 100bp`.  
-and combine the result as `all_alignments.csv` 26GB.
-
+Then we filter sam alignments using `filter_parse_script_v2.sh` provided in this repo for keeping only card alignments and removing inadequate alignments. 
+The paramenters for filtering were `Identity of the aligned sequence > 80%` and `Alignment length > 100bp`.  
+The results were combined as the `all_alignments.csv` file (26GB).
 
 ## Extracting alignment of human gut microbiom  accessions
 
