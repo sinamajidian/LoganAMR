@@ -8,6 +8,8 @@ Here we describe how we analyse the AMR gene in the Logan database for human met
 
 We used the alignment that Rayan prepared using minimap2 with card nucleotides as the reference and Logan contigs as query [here](https://gitlab.pasteur.fr/rchikhi_pasteur/logan-analysis/-/blob/master/batch/tasks/analysis_aug26.sh?ref_type=heads#L113). We downloaded them in bash after installing cli with ` conda install conda-forge::awscli`:
 
+(You may not need to download these, we also provided an intermediate file with much smaller size.)
+
 ```
 for i in {0..5}; do
 aws s3 cp s3://serratus-rayan/beetles/logan_aug26_run/minimap2-concat/DRR${i}.all_minimap2.txt.zst  . --no-sign-request 
