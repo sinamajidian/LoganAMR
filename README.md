@@ -210,7 +210,7 @@ DRR046464_7	DRR046464	METAGENOMIC	human gut metagenome	9.0	2014	Japan	Asia	193	8
 
 Resulted in this file 240MB in [google drive](https://drive.google.com/file/d/1DGe3z5TxGUjMe3Mhs_VdMGGjpnKwsszk/view?usp=drive_link).
 
-We did a round of python analasys on this.  But then we use R code to extract the trend accross coutnries and year: 
+We did a round of python analasys on this (not shown here).  But then we use R code to extract the trend accross coutnries and year: 
 ```
 amplicon_data_analysis.R
 amplicon_prevalence.R
