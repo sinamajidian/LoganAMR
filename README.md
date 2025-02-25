@@ -178,7 +178,7 @@ card.columns = ['ARO_ID', 'CVTERM ID', 'Model Sequence ID', 'Model ID','Model Na
 Example
 ```
 ARO_ID	CVTERM ID	Model Sequence ID	Model ID	Model Name	ARO Name	Protein Accession	DNA Accession	AMR Gene Family	Drug Class	Resistance Mechanism	CARD Short Name
-0	ARO:3005099	43314	6143	3831	23S rRNA (adenine(2058)-N(6))-methyltransferas...	23S rRNA (adenine(2058)-N(6))-methyltransferas...	AAB60941.1	AF002716.1	Erm 23S ribosomal RNA methyltransferase	lincosamide antibiotic;macrolide antibiotic;st...	antibiotic target alteration	Spyo_ErmA_MLSb
+ARO:3005099	43314	6143	3831	23S rRNA (adenine(2058)-N(6))-methyltransferas...	23S rRNA (adenine(2058)-N(6))-methyltransferas...	AAB60941.1	AF002716.1	Erm 23S ribosomal RNA methyltransferase	lincosamide antibiotic;macrolide antibiotic;st...	antibiotic target alteration	Spyo_ErmA_MLSb
 ```
 
 
@@ -202,7 +202,7 @@ alingmnet_meta_aro2.to_csv(file_ad)
 
 ```
 contig_id	acc	librarysource	organism	mbases	collection_year	country	continent	Alignment_Length	Identity	ARO_ID	AMRGeneFamily	DrugClass	ResistanceMechanism
-0	DRR046464_7	DRR046464	METAGENOMIC	human gut metagenome	9.0	2014	Japan	Asia	193	84.4560	ARO:3003541	16s rRNA with mutation conferring resistance t...	aminoglycoside antibiotic;glycopeptide antibio...	antibiotic target alteration
+DRR046464_7	DRR046464	METAGENOMIC	human gut metagenome	9.0	2014	Japan	Asia	193	84.4560	ARO:3003541	16s rRNA with mutation conferring resistance t...	aminoglycoside antibiotic;glycopeptide antibio...	antibiotic target alteration
 ```
 
 
