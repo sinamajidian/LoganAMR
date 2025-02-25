@@ -21,7 +21,7 @@ aws s3 cp s3://serratus-rayan/beetles/logan_aug26_run/minimap2-concat/SRR${i}.al
 done
 ```
 
-The following is the full list provided by Rayan.
+The following is the full list provided by Rayan. Note that these include alignment on CARD genes and some other genes too.  
 
 ```
 s3://serratus-rayan/beetles/logan_aug26_run/minimap2-concat/
@@ -103,7 +103,11 @@ done
 ```
 Note that three files are empty (ERR1 SRR1 SRR2).
 
-and combine them as `all_alignments.csv` 26GB.
+## filtering SAM
+
+Then we filter sam alignments using `filter_parse_script_v2.sh` provided in this repo for keeping only card alignments and removing short alignments. 
+
+and combine the result as `all_alignments.csv` 26GB.
 
 
 
