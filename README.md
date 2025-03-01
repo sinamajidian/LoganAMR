@@ -3,6 +3,14 @@
 
 Here we describe how we analyse the AMR gene in the Logan database for human metagenomics samples. 
 
+## installation
+
+```
+conda create -n logan python=3.9
+conda activate logan
+conda install conda-forge::awscli
+conda install conda-forge::zstd    
+```
 
 ## CARD alignment
 
