@@ -14,7 +14,7 @@ conda install conda-forge::zstd
 
 ## CARD alignment
 
-We used the alignment that Rayan prepared using minimap2 with card nucleotides as the reference and Logan contigs as query [here](https://gitlab.pasteur.fr/rchikhi_pasteur/logan-analysis/-/blob/master/batch/tasks/analysis_aug26.sh?ref_type=heads#L113). We downloaded them in bash after installing cli with ` conda install conda-forge::awscli`:
+We used the alignment that Rayan prepared using minimap2 with card nucleotides as the reference and Logan contigs as query [here](https://gitlab.pasteur.fr/rchikhi_pasteur/logan-analysis/-/blob/master/batch/tasks/analysis_aug26.sh?ref_type=heads#L113) (for [v1.1](https://gitlab.pasteur.fr/rchikhi_pasteur/logan-analysis/-/blob/master/analyses/feb27-card/results/filter_sam_parallel.sh?ref_type=heads#L19)).  We downloaded them in bash after installing cli with ` conda install conda-forge::awscli`:
 
 (You may not need to download these, we also provided an intermediate file with much smaller size.)
 
